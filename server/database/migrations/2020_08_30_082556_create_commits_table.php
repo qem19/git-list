@@ -12,12 +12,15 @@ class CreateCommitsTable extends Migration
     {
         Schema::create('commits', function (Blueprint $table) {
             $table->id();
-            $table->string('branch');
-            $table->unsignedInteger('repository_id');
+            $table->string('sha');
+            $table->unsignedInteger('branch_id');
             $table->string('description');
+            $table->string('author');
+            $table->timestamp('committed_at');
             $table->timestamps();
 
-            $table->foreign('repository_id')->references('id')->on('repositories');
+            $table->foreign('branch_id')->references('id')->on('branches')->cascadeOnDelete();
+            $table->unique(['sha', 'branch_id']);
         });
     }
 

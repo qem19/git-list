@@ -13,10 +13,11 @@ class CreateRepositoriesTable extends Migration
         Schema::create('repositories', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('vendor_id');
-            $table->string('repo_name');
+            $table->string('name');
             $table->timestamps();
 
-            $table->foreign('vendor_id')->references('id')->on('vendors');
+            $table->foreign('vendor_id')->references('id')->on('vendors')->cascadeOnDelete();
+            $table->unique(['vendor_id', 'name']);
         });
     }
 

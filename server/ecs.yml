@@ -1,0 +1,7 @@
+imports:
+  - { resource: vendor/umbrellio/code-style-php/umbrellio-cs.yml }
+
+parameters:
+  skip:
+    Symplify\CodingStandard\Sniffs\Architecture\DuplicatedClassShortNameSniff: ~
+    Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff: ~
