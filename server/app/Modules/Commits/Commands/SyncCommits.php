@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Modules\Commits\Commands;
 
-use App\Modules\Branches\Models\Branch;
-use Github\Api\Repository\Commits;
+use App\Modules\Commits\Jobs\SyncCommitsByPage;
+use App\Modules\Repositories\Models\Repository;
 
 class SyncCommits
 {
-    private $branch;
+    private const FIRST_PAGE = 1;
 
-    public function __construct(Branch $branch)
+    private $repository;
+
+    public function __construct(Repository $repository)
     {
-        $this->branch = $branch;
+        $this->repository = $repository;
     }
 
-    public function handle(Commits $api): void
+    public function handle(): void
     {
-        dd($api->all($this->branch->vendor->name, $this->branch->repository, ['sha' => $this->branch->name]));
+        SyncCommitsByPage::dispatch($this->repository, self::FIRST_PAGE);
     }
 }

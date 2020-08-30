@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\Repositories\Commands;
 
-use App\Modules\Repositories\Events\RepositoryCreated;
 use App\Modules\Repositories\Models\Repository;
 use App\Modules\Vendors\Models\Vendor;
 
@@ -19,17 +18,15 @@ class AddRepository
         $this->name = $name;
     }
 
-    public function handle(): void
+    public function handle(): Repository
     {
-        if (Repository::byName($this->name)->byVendor($this->vendor)->exists()) {
-            return;
+        if ($repository = Repository::byName($this->name)->byVendor($this->vendor)->first()) {
+            return $repository;
         }
 
-        $repository = Repository::create([
+        return Repository::create([
             'vendor_id' => $this->vendor->id,
             'name' => $this->name,
         ]);
-
-        event(new RepositoryCreated($repository));
     }
 }

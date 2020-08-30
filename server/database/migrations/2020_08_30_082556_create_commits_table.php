@@ -13,14 +13,14 @@ class CreateCommitsTable extends Migration
         Schema::create('commits', function (Blueprint $table) {
             $table->id();
             $table->string('sha');
-            $table->unsignedInteger('branch_id');
-            $table->string('description');
+            $table->unsignedInteger('repository_id');
+            $table->text('description');
             $table->string('author');
             $table->timestamp('committed_at');
             $table->timestamps();
 
-            $table->foreign('branch_id')->references('id')->on('branches')->cascadeOnDelete();
-            $table->unique(['sha', 'branch_id']);
+            $table->foreign('repository_id')->references('id')->on('repositories')->cascadeOnDelete();
+            $table->unique(['sha', 'repository_id']);
         });
     }
 
