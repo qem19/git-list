@@ -19,12 +19,12 @@ class AddCommit
         $this->dto = $dto;
     }
 
-    public function handle()
+    public function handle(): Commit
     {
-        if (Commit::bySha($this->dto->sha())->byRepository($this->repository)->exists()) {
-            return;
+        if ($commit = Commit::bySha($this->dto->sha())->byRepository($this->repository)->first()) {
+            return $commit;
         }
 
-        Commit::create(array_merge(['repository_id' => $this->repository->id], $this->dto->toArray()));
+        return Commit::create(array_merge(['repository_id' => $this->repository->id], $this->dto->toArray()));
     }
 }

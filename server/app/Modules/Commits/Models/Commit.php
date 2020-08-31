@@ -7,6 +7,7 @@ namespace App\Modules\Commits\Models;
 use App\Modules\Repositories\Models\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -19,6 +20,9 @@ use Illuminate\Support\Carbon;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  *
+ * Relations:
+ * @property-read Repository $repository
+ *
  * Scopes:
  * @method self|Builder bySha(string $sha)
  * @method self|Builder byRepository(Repository $repository)
@@ -26,6 +30,11 @@ use Illuminate\Support\Carbon;
 class Commit extends Model
 {
     protected $fillable = ['sha', 'repository_id', 'description', 'author', 'committed_at'];
+
+    public function repository(): BelongsTo
+    {
+        return $this->belongsTo(Repository::class);
+    }
 
     public function scopeBySha(Builder $query, string $sha): Builder
     {
